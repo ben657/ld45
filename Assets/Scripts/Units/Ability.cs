@@ -28,9 +28,13 @@ public class Ability : MonoBehaviour
 
     private void Awake()
     {
-        unit = GetComponentInParent<Unit>();
         minRange2 = minRange * minRange;
         maxRange2 = maxRange * maxRange;
+    }
+
+    protected virtual void Start()
+    {
+        unit = GetComponentInParent<Unit>();
     }
 
     public virtual void Activate()
@@ -56,7 +60,7 @@ public class Ability : MonoBehaviour
         {
             Unit target = unit.GetTarget();
             if (!target) return false;
-            float dist2 = (target.transform.position - transform.position).sqrMagnitude;
+            float dist2 = (target.GetPointOnBounds(transform.position) - transform.position).sqrMagnitude;
             return minRange2 < dist2 && dist2 < maxRange2;
         }
         return true;

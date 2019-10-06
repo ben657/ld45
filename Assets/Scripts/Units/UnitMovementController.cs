@@ -9,6 +9,8 @@ public class UnitMovementController : MonoBehaviour
     protected Unit unit;
     protected NavMeshAgent agent;
 
+    protected Unit leader;
+
     public float minVelocity = 0.02f;
 
     bool lastMoving = false;
@@ -22,6 +24,11 @@ public class UnitMovementController : MonoBehaviour
     public NavMeshAgent GetAgent()
     {
         return agent;
+    }
+
+    public void SetLeader(Unit leader)
+    {
+        this.leader = leader;
     }
 
     public virtual void Move(Vector3 target)
@@ -65,7 +72,7 @@ public class UnitMovementController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if(agent && IsMoving())
+        if (agent && IsMoving())
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(agent.destination, 0.5f);

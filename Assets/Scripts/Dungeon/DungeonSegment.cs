@@ -6,15 +6,19 @@ public class DungeonSegment : MonoBehaviour
 {
     public Transform[] interactablePositions;
     public Transform[] lightPositions;
+    public Transform[] monsterPositions;
+    public MonsterUnit[] monsterPrefabs;
 
     public int minInteractables = 1;
     public int maxInteractables = 5;
     public float interactableChance = 0.5f;
     public float lightChance = 0.5f;
+    public float monsterChance = 0.5f;
 
     public DungeonBuilder builder { get; set; }
 
     BoxCollider boundsCollider;
+    bool triggered = false;
     
     void Awake()
     {
@@ -68,6 +72,14 @@ public class DungeonSegment : MonoBehaviour
         {
             t.gameObject.SetActive(Random.Range(0.0f, 1.0f) < lightChance);
         }
+
+        foreach(Transform t in monsterPositions)
+        {
+            if (Random.Range(0, 1.0f) > monsterChance) return;
+            MonsterUnit prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
+            MonsterUnit unit = Instantiate(prefab);
+            unit.transform.position = t.position;
+        }
     }
 
     public Vector3 GetExitPosition()
@@ -77,5 +89,12 @@ public class DungeonSegment : MonoBehaviour
         float maxOffset = (bounds.size.x * 0.5f) - 2.0f;
         end += Vector3.right * Random.Range(-maxOffset, maxOffset);
         return end;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (triggered) return;
+        builder.Generate();
+        triggered = true;
     }
 }

@@ -11,15 +11,30 @@ public class DungeonBuilder : MonoBehaviour
     public LayerMask navigatableLayers;
 
     List<DungeonSegment> segments = new List<DungeonSegment>();
+    NavMeshSurface navSurface;
 
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < 5; i++)
+        PlayerHeroController playerController = FindObjectOfType<PlayerHeroController>();
+        Unit playerHero = playerController.unit;
+
+        navSurface = gameObject.AddComponent<NavMeshSurface>();
+        navSurface.layerMask = navigatableLayers;
+        navSurface.collectObjects = CollectObjects.Children;
+
+        Generate();
+
+        Vector3 spawnDir = -Vector3.right;
+        foreach(HeroUnit hero in PartyManager.it.party)
         {
-            Generate();
+            hero.transform.position = spawnDir * 2.0f;
+            hero.GetMovementController().SetLeader(playerHero);
+            hero.ClearUnitsInRange();
+            hero.GetMovementController().enabled = true;
+            hero.GetAbilityController().enabled = true;
+            spawnDir = Quaternion.AngleAxis(90, Vector3.up) * spawnDir;
         }
-        GenerateNavmesh();
     }
 
     // Update is called once per frame
@@ -30,10 +45,7 @@ public class DungeonBuilder : MonoBehaviour
 
     public void GenerateNavmesh()
     {
-        NavMeshSurface surface = gameObject.AddComponent<NavMeshSurface>();
-        surface.layerMask = navigatableLayers;
-        surface.collectObjects = CollectObjects.Children;
-        surface.BuildNavMesh();
+        navSurface.BuildNavMesh();
     }
 
     public void Generate()
@@ -53,5 +65,6 @@ public class DungeonBuilder : MonoBehaviour
         segment.Generate();
 
         segments.Add(segment);
+        GenerateNavmesh();
     }
 }

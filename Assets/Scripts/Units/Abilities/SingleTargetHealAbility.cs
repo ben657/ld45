@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleTargetAttackAbility : Ability
+public class SingleTargetHealAbility : Ability
 {
-    public string animationTrigger = "Attack";
-    public float knockback = 10.0f;
-    public float damageMultiplier = 0.0f;
+    public string animationTrigger = "Attack2";
+    public float healMultiplier = 0.0f;
 
     public override void Activate()
     {
@@ -16,9 +15,8 @@ public class SingleTargetAttackAbility : Ability
 
     public void AnimationDamageEvent()
     {
-        Unit target = unit.GetTarget();
-        if (!target) return;
-        target.Damage(unit.GetStats().strength * damageMultiplier, transform.forward * knockback);
+        if (!unit.GetTarget()) return;
+        unit.GetTarget().Heal(unit.GetStats().intelligence * healMultiplier);
     }
 
     public void AnimationAttackEndEvent()

@@ -8,6 +8,7 @@ public class HeroInfo : MonoBehaviour
     HeroUnit hero;
 
     public bool InParty = false;
+    public Font font;
 
     public Text nameText;
     public Text levelText;
@@ -28,6 +29,18 @@ public class HeroInfo : MonoBehaviour
         strStatImage.transform.localScale = new Vector3(stats.strength / 25.0f, 1.0f, 1.0f);
         intStatImage.transform.localScale = new Vector3(stats.intelligence / 25.0f, 1.0f, 1.0f);
         dexStatImage.transform.localScale = new Vector3(stats.dexterity / 25.0f, 1.0f, 1.0f);
+
+        Ability[] abilities = hero.GetAbilityController().GetAbilities();
+        foreach(Ability ability in abilities)
+        {
+            GameObject o = new GameObject();
+            Text text = o.AddComponent<Text>();
+            text.text = ability.name;
+            text.resizeTextForBestFit = true;
+            text.font = font;
+            text.alignment = TextAnchor.MiddleCenter;
+            o.transform.SetParent(abilitiesList, false);
+        }
     }
 
     public void DoAction()

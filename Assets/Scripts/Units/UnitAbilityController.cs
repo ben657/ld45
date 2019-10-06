@@ -19,6 +19,11 @@ public class UnitAbilityController : MonoBehaviour
         abilities = GetComponentsInChildren<Ability>();
     }
 
+    public Ability[] GetAbilities()
+    {
+        return abilities;
+    }
+
     public void PassthroughMessage(string name)
     {
         foreach(Ability ability in abilities)

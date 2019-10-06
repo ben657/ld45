@@ -13,6 +13,19 @@ public enum TargettingType
     MostHealth
 }
 
+public enum TargettingAlignment
+{
+    Friendly,
+    Enemy
+}
+
+public enum StatType
+{
+    STR,
+    INT,
+    DEX
+}
+
 [System.Serializable]
 public struct UnitStats
 {
@@ -25,7 +38,7 @@ public struct UnitStats
 
     public UnitStats(int str, int inte, int dex)
     {
-        maxHealth = str * 1.5f;
+        maxHealth = str * 3.0f;
         health = maxHealth;
 
         strength = str;
@@ -37,6 +50,25 @@ public struct UnitStats
     {
         return health / maxHealth;
     }
+
+    public float GetStat(StatType statType)
+    {
+        if (statType == StatType.STR) return strength;
+        else if (statType == StatType.INT) return intelligence;
+        else if (statType == StatType.DEX) return dexterity;
+        return 0;
+    }
+
+    public void SetStat(StatType statType, int stat)
+    {
+        if (statType == StatType.STR)
+        {
+            strength = stat;
+            maxHealth = strength * 3.0f;
+        }
+        else if (statType == StatType.INT) intelligence = stat;
+        else if (statType == StatType.DEX) dexterity = stat;
+    }
 }
 
 public class Unit : MonoBehaviour
@@ -44,6 +76,7 @@ public class Unit : MonoBehaviour
     //Ability[] abilities;
 
     public TargettingType targettingType = TargettingType.Nearest;
+    public TargettingAlignment targettingAlignment = TargettingAlignment.Enemy;
     
     UnitMovementController movementController;
     UnitAbilityController abilityController;
@@ -51,13 +84,15 @@ public class Unit : MonoBehaviour
     Animator animator;
     [SerializeField]
     UnitStats stats;
+    [SerializeField]
+    HealthBar healthBar;
+    Collider boundsCollider;
 
     Unit target;
     HashSet<Unit> unitsInRange = new HashSet<Unit>();
     
     void Awake()
     {
-        movementController = GetComponent<UnitMovementController>();
         abilityController = GetComponentInChildren<UnitAbilityController>();
     }
 
@@ -66,9 +101,18 @@ public class Unit : MonoBehaviour
         stats = new UnitStats(str, inte, dex);
     }
 
-    void Start()
+    protected virtual void Start()
     {
-        
+        movementController = GetComponent<UnitMovementController>();
+        Collider[] colliders = GetComponents<Collider>();
+        foreach(Collider collider in colliders)
+        {
+            if(!collider.isTrigger)
+            {
+                boundsCollider = collider;
+                break;
+            }
+        }
     }
 
     public Animator GetAnimator()
@@ -86,19 +130,71 @@ public class Unit : MonoBehaviour
         return abilityController;
     }
 
+    public Bounds GetBounds()
+    {
+        return boundsCollider.bounds;
+    }
+
+    public Vector3 GetPointOnBounds(Vector3 target)
+    {
+        return boundsCollider.ClosestPoint(target);
+    }
+
     public Unit GetTarget()
     {
         return target;
     }
 
+    public void ClearUnitsInRange()
+    {
+        unitsInRange.Clear();
+    }
+
+    public void Damage(float amount, Vector3 knockback)
+    {
+        stats.health -= amount;
+        healthBar.SetPercentage(stats.GetHealthPercentage());
+        if(knockback.sqrMagnitude > 0.0f)
+            movementController.GetAgent().velocity += knockback;
+
+        if (stats.health <= 0.0f)
+            Kill();
+    }
+
+    public void Heal(float amount)
+    {
+        stats.health = Mathf.Clamp(stats.health + amount, 0.0f, stats.maxHealth);
+        healthBar.SetPercentage(stats.GetHealthPercentage());
+    }
+
+    public void Kill()
+    {
+        //TODO: something pretty
+        Destroy(gameObject);
+    }
+
+    public bool IsDead()
+    {
+        return stats.health <= 0.0f;
+    }
+
     void UpdateTarget()
     {
+        List<Unit> deadUnits = new List<Unit>();
+        foreach(Unit unit in unitsInRange)
+        {
+            if (!unit || unit.IsDead()) deadUnits.Add(unit);
+        }
+        deadUnits.ForEach(u => unitsInRange.Remove(u));
+
         float bestMetric = 0;
         Unit bestUnit = null;
+        List<Unit> targets = new List<Unit>(unitsInRange);
+        targets = targets.FindAll(u => ShouldTarget(u));
         if(targettingType == TargettingType.Nearest)
         {
             bestMetric = Mathf.Infinity;
-            foreach(Unit unit in unitsInRange)
+            foreach(Unit unit in targets)
             {
                 float dist2 = Vector3.SqrMagnitude(unit.transform.position - transform.position);
                 if(dist2 < bestMetric)
@@ -111,7 +207,7 @@ public class Unit : MonoBehaviour
         else if (targettingType == TargettingType.Farthest)
         {
             bestMetric = 0.0f;
-            foreach (Unit unit in unitsInRange)
+            foreach (Unit unit in targets)
             {
                 float dist2 = Vector3.SqrMagnitude(unit.transform.position - transform.position);
                 if (dist2 > bestMetric)
@@ -124,7 +220,7 @@ public class Unit : MonoBehaviour
         else if (targettingType == TargettingType.LeastHealth)
         {
             bestMetric = Mathf.Infinity;
-            foreach (Unit unit in unitsInRange)
+            foreach (Unit unit in targets)
             {
                 float health = unit.GetStats().GetHealthPercentage();
                 if (health < bestMetric)
@@ -137,7 +233,7 @@ public class Unit : MonoBehaviour
         else if (targettingType == TargettingType.MostHealth)
         {
             bestMetric = 0.0f;
-            foreach (Unit unit in unitsInRange)
+            foreach (Unit unit in targets)
             {
                 float health = unit.GetStats().GetHealthPercentage();
                 if (health > bestMetric)
@@ -172,6 +268,7 @@ public class Unit : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Unit unit = other.GetComponent<Unit>();
+        Debug.Log(other.name);
         if(unit && unit != this)
         {
             unitsInRange.Add(unit);

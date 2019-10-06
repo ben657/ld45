@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeleeUnitMovementController : UnitMovementController
 {
-    public float targetDistance = 0.5f;
+    public float targetDistance = 1.5f;
     public float stopOffset = 0.2f;
 
     float stopDist2 = 0.0f;
@@ -20,9 +20,10 @@ public class MeleeUnitMovementController : UnitMovementController
         base.Update();
 
         Unit target = unit.GetTarget();
+        if (!target && leader) target = leader;
         if(target)
         {
-            Vector3 targetPos = target.transform.position;
+            Vector3 targetPos = target.GetPointOnBounds(transform.position);
             Vector3 between = transform.position - targetPos;
             if (between.sqrMagnitude < stopDist2)
             {

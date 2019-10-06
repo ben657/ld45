@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleTargetAttackAbility : Ability
+public class SingleTargetRangedAbility : Ability
 {
+    public Projectile projectilePrefab;
+
     public string animationTrigger = "Attack";
     public float knockback = 10.0f;
     public float damageMultiplier = 0.0f;
@@ -16,9 +18,11 @@ public class SingleTargetAttackAbility : Ability
 
     public void AnimationDamageEvent()
     {
-        Unit target = unit.GetTarget();
-        if (!target) return;
-        target.Damage(unit.GetStats().strength * damageMultiplier, transform.forward * knockback);
+        if (!unit.GetTarget()) return;
+        Projectile projectile = Instantiate(projectilePrefab);
+        projectile.transform.position = transform.position + Vector3.up * 1.0f;
+        projectile.SetTarget(unit.GetTarget());
+        projectile.GetComponent<DamageDealer>().owner = unit;
     }
 
     public void AnimationAttackEndEvent()
