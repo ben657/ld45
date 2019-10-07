@@ -11,17 +11,17 @@ public class DungeonBuilder : MonoBehaviour
     public Light spotlightPrefab;
     public LayerMask navigatableLayers;
 
+    public DungeonCameraController cameraController;
+    public float segmentFallHeight = 5.0f;
+    public float segmentFallTime = 0.0f;
+    public AnimationCurve segmentFallCurve;
+
     HeroUnit playerHero;
     List<DungeonSegment> segments = new List<DungeonSegment>();
-    NavMeshSurface navSurface;
 
     // Start is called before the first frame update
     void Start()
     {
-        navSurface = gameObject.AddComponent<NavMeshSurface>();
-        navSurface.layerMask = navigatableLayers;
-        navSurface.collectObjects = CollectObjects.Children;
-
         Generate(true);
     }
 
@@ -31,15 +31,18 @@ public class DungeonBuilder : MonoBehaviour
         
     }
 
-    void SpawnHeroes()
+    void SpawnHeroes(DungeonSegment segment)
     {
         playerHero = Instantiate(playerHeroPrefab);
+        playerHero.transform.parent = segment.transform;
+        cameraController.target = playerHero.transform;
         playerHero.GetComponent<UnitMovementController>().Disable();
-        playerHero.transform.position = transform.position;
+        playerHero.transform.position = segment.transform.position;
         Vector3 spawnDir = -Vector3.right;
         foreach (HeroUnit hero in PartyManager.it.party)
         {
             hero.transform.position = playerHero.transform.position + spawnDir * 2.0f;
+            hero.transform.parent = segment.transform;
             hero.GetMovementController().SetLeader(playerHero);
             hero.ClearUnitsInRange();
             hero.GetMovementController().enabled = true;
@@ -50,8 +53,18 @@ public class DungeonBuilder : MonoBehaviour
 
     public IEnumerator GenerateNavmeshAndComplete(DungeonSegment segment, bool first = false)
     {
-        navSurface.BuildNavMesh();
-        yield return new WaitForSeconds(1.0f);
+        segment.GenerateNavMesh();
+        float s = 0.0f;
+        Vector3 pos;
+        while(s <= 1.0f)
+        {
+            yield return new WaitForFixedUpdate();
+            pos = segment.transform.position;
+            pos.y = segmentFallHeight - segmentFallCurve.Evaluate(Mathf.Clamp01(s)) * segmentFallHeight;
+            segment.transform.position = pos;
+            s += Time.fixedDeltaTime / segmentFallTime;
+        }
+
         segment.CompleteGenerate();
         if (first)
         {
@@ -75,10 +88,10 @@ public class DungeonBuilder : MonoBehaviour
             position = segments[segments.Count - 1].GetExitPosition();
         }
         segment.transform.parent = transform;
-        segment.transform.position = position;
+        segment.transform.position = position + Vector3.up * segmentFallHeight;
         segments.Add(segment);
 
-        if (first) SpawnHeroes();
+        if (first) SpawnHeroes(segment);
 
         segment.StartGenerate(segments.Count > 1);
         StartCoroutine(GenerateNavmeshAndComplete(segment, first));

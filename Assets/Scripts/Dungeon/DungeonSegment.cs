@@ -47,6 +47,14 @@ public class DungeonSegment : MonoBehaviour
         interactable.position = t.position;
     }
 
+    public void GenerateNavMesh()
+    {
+        NavMeshSurface navSurface = gameObject.AddComponent<NavMeshSurface>();
+        navSurface.layerMask = builder.navigatableLayers;
+        navSurface.collectObjects = CollectObjects.Children;
+        navSurface.BuildNavMesh();
+    }
+
     public void StartGenerate(bool monsters = true)
     {
         int interactablesSpawned = 0;
@@ -83,6 +91,7 @@ public class DungeonSegment : MonoBehaviour
                 if (Random.Range(0, 1.0f) > monsterChance) continue;
                 MonsterUnit prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
                 MonsterUnit unit = Instantiate(prefab, t.position, t.rotation);
+                unit.transform.parent = t;
                 spawnedMonsters.Add(unit);
             }
         }
@@ -91,6 +100,7 @@ public class DungeonSegment : MonoBehaviour
     public void CompleteGenerate()
     {
         spawnedMonsters.ForEach(m => m.GetMovementController().GetAgent().enabled = true);
+        GetComponentInChildren<NavMeshLink>(true).gameObject.SetActive(true);
     }
 
     public Vector3 GetExitPosition()
