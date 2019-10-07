@@ -59,6 +59,18 @@ public struct UnitStats
         return 0;
     }
 
+    public StatType GetPrimaryStat()
+    {
+        int bestStat = Mathf.Max(strength, intelligence, dexterity);
+        if (bestStat == strength)
+            return StatType.STR;
+        else if (bestStat == intelligence)
+            return StatType.INT;
+        else
+            return StatType.DEX;
+
+    }
+
     public void SetStat(StatType statType, int stat)
     {
         if (statType == StatType.STR)

@@ -17,6 +17,10 @@ public class HeroInfo : MonoBehaviour
     public Image dexStatImage;
     public Text buttonText;
 
+    public Sprite strPanel;
+    public Sprite intPanel;
+    public Sprite dexPanel;
+
     public Transform abilitiesList;
 
     public void SetHero(HeroUnit hero)
@@ -29,6 +33,19 @@ public class HeroInfo : MonoBehaviour
         strStatImage.transform.localScale = new Vector3(stats.strength / 25.0f, 1.0f, 1.0f);
         intStatImage.transform.localScale = new Vector3(stats.intelligence / 25.0f, 1.0f, 1.0f);
         dexStatImage.transform.localScale = new Vector3(stats.dexterity / 25.0f, 1.0f, 1.0f);
+
+        switch(stats.GetPrimaryStat())
+        {
+            case StatType.STR:
+                GetComponent<Image>().sprite = strPanel;
+                break;
+            case StatType.INT:
+                GetComponent<Image>().sprite = intPanel;
+                break;
+            case StatType.DEX:
+                GetComponent<Image>().sprite = dexPanel;
+                break;
+        }
 
         Ability[] abilities = hero.GetAbilityController().GetAbilities();
         foreach(Ability ability in abilities)
