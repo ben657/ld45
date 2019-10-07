@@ -45,4 +45,10 @@ public class HeroUnit : Unit
             return unit.GetComponent<HeroUnit>() != null;
         else return false;
     }
+
+    public override IEnumerator Kill()
+    {
+        yield return new WaitUntil(() => GetMovementController().GetLeader().IsDead());
+        yield return base.Kill();
+    }
 }

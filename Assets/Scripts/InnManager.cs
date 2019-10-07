@@ -54,6 +54,7 @@ public class InnManager : MonoBehaviour
     public HeroUnit GenerateHero(int rarity, StatType primaryStat, int cost = -1)
     {
         UnitStats stats = StatHelper.GenerateStats(rarity, primaryStat);
+        stats.UpdateMaxHealth(true, 2.0f);
         int heroCost = cost < 0 ? (stats.strength + stats.intelligence + stats.dexterity) * 10 : cost;
         return GenerateHero(stats, rarity, primaryStat, heroCost);
     }

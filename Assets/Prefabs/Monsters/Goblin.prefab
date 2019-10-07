@@ -139,6 +139,7 @@ MonoBehaviour:
     intelligence: 0
     dexterity: 0
   healthBar: {fileID: 9119364469962218349}
+  model: {fileID: 319799929116431876}
   coinPrefab: {fileID: 4573178592168475016, guid: f2bd44133de8fba48bfe107e9a9ac9b3,
     type: 3}
   primaryStat: 0

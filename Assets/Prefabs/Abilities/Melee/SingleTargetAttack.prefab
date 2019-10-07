@@ -45,8 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activationType: 1
   cooldown: 2
+  minDexCDModifier: 1
+  maxDexCDModifier: 0.5
   minRange: 0
-  maxRange: 1.7
+  maxRange: 2
+  effectiveCD: 0
   animationTrigger: Attack
   knockback: 10
   damageMultiplier: 0.5

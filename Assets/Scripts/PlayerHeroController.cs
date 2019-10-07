@@ -31,7 +31,7 @@ public class PlayerHeroController : MonoBehaviour
             }
         }
 
-        if(unit.IsDead() && !unit.IsDying())
+        if(!unit)
         {
             PartyManager.it.LoadInn();
         }

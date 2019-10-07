@@ -405,7 +405,7 @@ MonoBehaviour:
   interactableChance: 0.5
   lightChance: 0.3
   minMonsters: 1
-  maxMonsters: 10
+  maxMonsters: 2
 --- !u!1 &1517391900680045859
 GameObject:
   m_ObjectHideFlags: 0
@@ -3354,11 +3354,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5289014836915995035}
     m_Modifications:
-    - target: {fileID: 7189023274161949327, guid: cdceb57819c053e4fba35e86a4b994ba,
-        type: 3}
-      propertyPath: m_Name
-      value: Rock
-      objectReference: {fileID: 0}
     - target: {fileID: 898169129914788756, guid: cdceb57819c053e4fba35e86a4b994ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3413,6 +3408,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -33.069
+      objectReference: {fileID: 0}
+    - target: {fileID: 7189023274161949327, guid: cdceb57819c053e4fba35e86a4b994ba,
+        type: 3}
+      propertyPath: m_Name
+      value: Rock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdceb57819c053e4fba35e86a4b994ba, type: 3}

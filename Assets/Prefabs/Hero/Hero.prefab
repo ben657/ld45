@@ -371,6 +371,7 @@ MonoBehaviour:
     intelligence: 0
     dexterity: 0
   healthBar: {fileID: 4932633333451408953}
+  model: {fileID: 4226146111826610846}
   rarity: 0
   cost: 0
   Chest: {fileID: 4226146110995069088}

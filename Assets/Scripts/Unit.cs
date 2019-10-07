@@ -109,10 +109,12 @@ public class Unit : MonoBehaviour
     [SerializeField]
     HealthBar healthBar;
     Collider boundsCollider;
+    [SerializeField]
+    Transform model;
 
     Unit target;
     HashSet<Unit> unitsInRange = new HashSet<Unit>();
-    bool dying = false;
+    protected bool dying = false;
     
     void Awake()
     {
@@ -162,6 +164,11 @@ public class Unit : MonoBehaviour
     public Bounds GetBounds()
     {
         return boundsCollider.bounds;
+    }
+
+    public Transform GetModel()
+    {
+        return model;
     }
 
     public Vector3 GetPointOnBounds(Vector3 target)

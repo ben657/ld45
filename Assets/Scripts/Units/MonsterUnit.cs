@@ -27,10 +27,18 @@ public class MonsterUnit : Unit
 
     public override IEnumerator Kill()
     {
-        Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        GetModel().gameObject.SetActive(false);
         UnitStats stats = GetStats();
         int reward = (stats.strength + stats.intelligence + stats.dexterity);
         PartyManager.it.AddGold(reward);
-        return base.Kill();
+
+        for(int i = 0; i < Mathf.Min(reward, 10); i++)
+        {
+            Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        dying = false;
+        Destroy(gameObject);
     }
 }

@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class MeleeUnitMovementController : UnitMovementController
 {
-    public float targetDistance = 1.5f;
+    public float targetDistance = 0.5f;
     public float stopOffset = 0.2f;
 
     float stopDist2 = 0.0f;
 
     void Start()
     {
+        //targetDistance = unit.GetBounds().size.magnitude;
         float stopDist = targetDistance + stopOffset;
         stopDist2 = stopDist * stopDist;
     }

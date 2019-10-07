@@ -30,6 +30,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 768
   color: {r: 1, g: 0.9090755, b: 0, a: 1}
+  interactDist: 0
 --- !u!1001 &9009895933515519810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37,6 +38,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4316658787768705357, guid: a60a2aa6879ab3f4baa4c1336be3ba53,
+        type: 3}
+      propertyPath: stats.maxHealth
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4316658787768705357, guid: a60a2aa6879ab3f4baa4c1336be3ba53,
+        type: 3}
+      propertyPath: stats.health
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 4226146111212643709, guid: a60a2aa6879ab3f4baa4c1336be3ba53,
         type: 3}
       propertyPath: m_Name

@@ -38,6 +38,11 @@ public class UnitMovementController : MonoBehaviour
         return agent;
     }
 
+    public Unit GetLeader()
+    {
+        return leader;
+    }
+
     public void SetLeader(Unit leader)
     {
         this.leader = leader;
