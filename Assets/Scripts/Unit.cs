@@ -38,12 +38,14 @@ public struct UnitStats
 
     public UnitStats(int str, int inte, int dex)
     {
-        maxHealth = str * 3.0f;
-        health = maxHealth;
+        maxHealth = 1.0f;
+        health = 1.0f;
 
         strength = str;
         intelligence = inte;
         dexterity = dex;
+
+        UpdateMaxHealth(true);
     }
 
     public float GetHealthPercentage()
@@ -73,13 +75,21 @@ public struct UnitStats
 
     public void SetStat(StatType statType, int stat)
     {
-        if (statType == StatType.STR)
-        {
-            strength = stat;
-            maxHealth = strength * 3.0f;
-        }
+        if (statType == StatType.STR) strength = stat;
         else if (statType == StatType.INT) intelligence = stat;
         else if (statType == StatType.DEX) dexterity = stat;
+        UpdateMaxHealth(true);
+    }
+
+    public void UpdateMaxHealth(bool heal = false, float modifier = 1.0f)
+    {
+        SetMaxHealth(strength * StatHelper.healthModifier * modifier, heal);
+    }
+
+    public void SetMaxHealth(float health, bool heal = false)
+    {
+        maxHealth = (int)Mathf.Clamp(health, 1.0f, StatHelper.maxStatValue * StatHelper.healthModifier);
+        if (heal) this.health = maxHealth;
     }
 }
 
@@ -102,6 +112,7 @@ public class Unit : MonoBehaviour
 
     Unit target;
     HashSet<Unit> unitsInRange = new HashSet<Unit>();
+    bool dying = false;
     
     void Awake()
     {
@@ -176,24 +187,34 @@ public class Unit : MonoBehaviour
             movementController.GetAgent().velocity += knockback;
 
         if (stats.health <= 0.0f)
-            Kill();
+        {
+            dying = true;
+            StartCoroutine(Kill());
+        }
     }
 
     public void Heal(float amount)
     {
+        if (IsDead()) return;
         stats.health = Mathf.Clamp(stats.health + amount, 0.0f, stats.maxHealth);
         healthBar.SetPercentage(stats.GetHealthPercentage());
     }
 
-    public void Kill()
+    public virtual IEnumerator Kill()
     {
-        //TODO: something pretty
+        yield return new WaitForFixedUpdate();
+        dying = false;
         Destroy(gameObject);
     }
 
     public bool IsDead()
     {
         return stats.health <= 0.0f;
+    }
+
+    public bool IsDying()
+    {
+        return dying;
     }
 
     void UpdateTarget()

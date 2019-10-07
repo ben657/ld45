@@ -32,6 +32,7 @@ public class InnManager : MonoBehaviour
             }
         }
 
+        GenerateHero(1, StatType.STR, 0);
         int heroes = Random.Range(minHeroes, maxHeroes + 1);
         for(int i = 0; i < heroes; i++)
             GenerateHero();
@@ -42,18 +43,28 @@ public class InnManager : MonoBehaviour
     {
         
     }
-
+    
     public HeroUnit GenerateHero()
     {
-        int rarity = Random.Range(1, StatHelper.rarities + 1);
         StatType primaryStat = (StatType)Random.Range(0, 4);
-        UnitStats stats = StatHelper.GenerateStats(rarity, primaryStat);
+        int rarity = Random.Range(1, rarities + 1);
+        return GenerateHero(rarity, primaryStat);
+    }
 
+    public HeroUnit GenerateHero(int rarity, StatType primaryStat, int cost = -1)
+    {
+        UnitStats stats = StatHelper.GenerateStats(rarity, primaryStat);
+        int heroCost = cost < 0 ? (stats.strength + stats.intelligence + stats.dexterity) * 10 : cost;
+        return GenerateHero(stats, rarity, primaryStat, heroCost);
+    }
+
+    public HeroUnit GenerateHero(UnitStats stats, int rarity, StatType primaryStat, int cost)
+    {
         HeroUnit hero = Instantiate(heroPrefab);
         hero.name = "Some random name";
         hero.rarity = rarity;
         hero.SetStats(stats);
-        hero.cost = (stats.strength + stats.intelligence + stats.dexterity) * 10;
+        hero.cost = cost;
         Ability[] abilites = { };
         if (primaryStat == StatType.STR) abilites = strAbilities;
         else if (primaryStat == StatType.INT) abilites = Random.Range(0.0f, 1.0f) > 0.5f ? intDmgAbilities : intSupAbilities;

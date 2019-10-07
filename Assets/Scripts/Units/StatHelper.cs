@@ -5,13 +5,16 @@ using UnityEngine;
 public static class StatHelper
 {
     public static int rarities = 4;
-    static int maxStatValue = 25;
+    public static int maxStatValue = 25;
+    public static float healthModifier = 10.0f;
 
     public static int[] GenerateStatRange(int rarity)
     {
         float rarityPercentage = (float)rarity / (float)rarities;
         int minStat = (int)((maxStatValue - (maxStatValue / (rarities + 1))) * rarityPercentage);
+        if (minStat <= 0) minStat = 1;
         int maxStat = minStat + (maxStatValue / (rarities + 1)) + 1;
+        if (maxStat <= 0) maxStat = 1;
         return new int[] { minStat, maxStat };
     }
 

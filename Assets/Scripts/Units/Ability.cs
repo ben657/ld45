@@ -14,6 +14,8 @@ public class Ability : MonoBehaviour
 
     public AbilityActivationType activationType = AbilityActivationType.Always;
     public float cooldown = 1.0f;
+    public float minDexCDModifier = 1.0f;
+    public float maxDexCDModifier = 0.5f;
     
     public float minRange = 0.0f;
     public float maxRange = 10.0f;
@@ -23,6 +25,8 @@ public class Ability : MonoBehaviour
 
     bool coolingDown = false;
     float sinceUsed = 0.0f;
+    [SerializeField]
+    float effectiveCD = 0.0f;
 
     protected bool active = false;
 
@@ -34,12 +38,16 @@ public class Ability : MonoBehaviour
 
     protected virtual void Start()
     {
-        
+
     }
 
     public void SetUnit(Unit unit)
     {
         this.unit = unit;
+        float dexMod = unit.GetStats().GetStat(StatType.DEX) / StatHelper.maxStatValue;
+        float range = minDexCDModifier - maxDexCDModifier;
+        float dexCDMod = maxDexCDModifier + (range * dexMod);
+        effectiveCD = cooldown * dexCDMod;
     }
 
     public virtual void Activate()
@@ -75,6 +83,6 @@ public class Ability : MonoBehaviour
     {
         if(coolingDown)
             sinceUsed += Time.deltaTime;
-        coolingDown = sinceUsed < cooldown;
+        coolingDown = sinceUsed < effectiveCD;
     }
 }

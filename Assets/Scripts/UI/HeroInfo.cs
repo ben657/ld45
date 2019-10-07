@@ -16,6 +16,7 @@ public class HeroInfo : MonoBehaviour
     public Image intStatImage;
     public Image dexStatImage;
     public Text buttonText;
+    public Button actionButton;
 
     public Sprite strPanel;
     public Sprite intPanel;
@@ -27,7 +28,14 @@ public class HeroInfo : MonoBehaviour
     {
         this.hero = hero;
         nameText.text = hero.name;
-        buttonText.text = "Hire (" + hero.cost + " Gold)";
+        if (!InParty)
+            buttonText.text = "Hire (" + hero.cost + " Gold)";
+        else
+            buttonText.text = "Remove from party";
+
+        if (!InParty && hero.cost > PartyManager.it.GetGold())
+            actionButton.interactable = false;
+
         levelText.text = "Rarity " + hero.rarity;
         UnitStats stats = hero.GetStats();
         strStatImage.transform.localScale = new Vector3(stats.strength / 25.0f, 1.0f, 1.0f);
@@ -63,7 +71,10 @@ public class HeroInfo : MonoBehaviour
     public void DoAction()
     {
         if (InParty)
-            Debug.Log("Should remove from party");
+        {
+            PartyManager.it.RemoveMember(hero);
+            GetComponentInParent<InnUIManager>().forHireList.AddHero(hero);
+        }
         else
         {
             PartyManager.it.AddMember(hero);

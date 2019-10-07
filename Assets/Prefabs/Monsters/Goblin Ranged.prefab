@@ -139,7 +139,9 @@ MonoBehaviour:
     intelligence: 0
     dexterity: 0
   healthBar: {fileID: 9119364469962218349}
-  primaryStat: 0
+  coinPrefab: {fileID: 4573178592168475016, guid: f2bd44133de8fba48bfe107e9a9ac9b3,
+    type: 3}
+  primaryStat: 2
   rarity: 1
 --- !u!65 &319799928075918252
 BoxCollider:
@@ -177,7 +179,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.75
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -398,6 +400,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7705591048582594468, guid: 6ecb02e95b0966e428da6ff9c5e9d149,
+        type: 3}
+      propertyPath: damageMultiplier
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ecb02e95b0966e428da6ff9c5e9d149, type: 3}

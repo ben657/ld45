@@ -9,17 +9,26 @@ public class PartyManager : MonoBehaviour
 
     public HashSet<HeroUnit> party = new HashSet<HeroUnit>();
 
+    int gold = 0;
+
     private void Awake()
     {
         if(!it)
         {
             it = this;
             DontDestroyOnLoad(gameObject);
+
+            gold = PlayerPrefs.GetInt("gold", 0);
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        PlayerPrefs.SetInt("gold", gold);
     }
 
     public void AddMember(HeroUnit hero)
@@ -32,7 +41,23 @@ public class PartyManager : MonoBehaviour
     {
         if (party.Contains(hero))
             party.Remove(hero);
-        Destroy(hero.gameObject);
+        SceneManager.MoveGameObjectToScene(hero.gameObject, SceneManager.GetActiveScene());
+    }
+
+    public void AddGold(int amount)
+    {
+        gold += amount;
+    }
+
+    public void TakeGold(int amount)
+    {
+        gold -= amount;
+        if (gold < 0) gold = 0;
+    }
+
+    public int GetGold()
+    {
+        return gold;
     }
 
     public void LoadDungeon()

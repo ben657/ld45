@@ -22,7 +22,10 @@ public class SingleTargetRangedAbility : Ability
         Projectile projectile = Instantiate(projectilePrefab);
         projectile.transform.position = transform.position + Vector3.up * 1.0f;
         projectile.SetTarget(unit.GetTarget());
-        projectile.GetComponent<DamageDealer>().owner = unit;
+
+        DamageDealer damager = projectile.GetComponent<DamageDealer>();
+        damager.owner = unit;
+        damager.statModifier = damageMultiplier;
     }
 
     public void AnimationAttackEndEvent()

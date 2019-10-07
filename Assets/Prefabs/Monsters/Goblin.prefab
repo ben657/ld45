@@ -139,6 +139,8 @@ MonoBehaviour:
     intelligence: 0
     dexterity: 0
   healthBar: {fileID: 9119364469962218349}
+  coinPrefab: {fileID: 4573178592168475016, guid: f2bd44133de8fba48bfe107e9a9ac9b3,
+    type: 3}
   primaryStat: 0
   rarity: 1
 --- !u!65 &319799928075918252
@@ -177,7 +179,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.75
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

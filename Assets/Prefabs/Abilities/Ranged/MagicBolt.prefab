@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34aabb2434838f448a3dbfe8b1395848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockback: 5
+  knockback: 2
   primaryStat: 1
   statModifier: 1
   owner: {fileID: 0}

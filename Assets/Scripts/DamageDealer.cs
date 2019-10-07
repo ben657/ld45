@@ -36,7 +36,10 @@ public class DamageDealer : MonoBehaviour
         {
             float damage = statModifier;
             if (owner) damage *= owner.GetStats().GetStat(primaryStat);
-            unit.Damage(damage, transform.forward * knockback);
+            int damageActual = (int)damage;
+            if (damage <= 0) damageActual = 1;
+            unit.Damage(damageActual, transform.forward * knockback);
+            Debug.Log("Dealt " + damageActual + " damage");
         }
         Destroy(gameObject);
     }
