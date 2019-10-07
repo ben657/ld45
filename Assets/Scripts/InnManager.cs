@@ -45,32 +45,20 @@ public class InnManager : MonoBehaviour
 
     public HeroUnit GenerateHero()
     {
-        int rarity = Random.Range(1, rarities + 1);
-        float rarityPercentage = (float)rarity / (float)rarities;
-        int minStat = (int)((maxStats - (maxStats / (rarities + 1))) * rarityPercentage);
-        int maxStat = minStat + (maxStats / (rarities + 1)) + 1;
-
-        int str = Random.Range(minStat, maxStat);
-        int inte = Random.Range(minStat, maxStat);
-        int dex = Random.Range(minStat, maxStat);
+        int rarity = Random.Range(1, StatHelper.rarities + 1);
+        StatType primaryStat = (StatType)Random.Range(0, 4);
+        UnitStats stats = StatHelper.GenerateStats(rarity, primaryStat);
 
         HeroUnit hero = Instantiate(heroPrefab);
         hero.name = "Some random name";
         hero.rarity = rarity;
-        hero.cost = (str + inte + dex) * 10;
-        hero.SetStats(str, inte, dex);
+        hero.SetStats(stats);
+        hero.cost = (stats.strength + stats.intelligence + stats.dexterity) * 10;
         Ability[] abilites = { };
-        if (str > inte && str > dex) abilites = strAbilities;
-        else if (inte > str && inte > dex) abilites = Random.Range(0.0f, 1.0f) > 0.5f ? intDmgAbilities : intSupAbilities;
-        else if (dex > str && dex > inte) abilites = dexAbilities;
-        else
-        {
-            int choice = Random.Range(0, 4);
-            if (choice == 0) abilites = strAbilities;
-            else if (choice == 1) abilites = intDmgAbilities;
-            else if (choice == 2) abilites = intSupAbilities;
-            else if (choice == 3) abilites = dexAbilities;
-        }
+        if (primaryStat == StatType.STR) abilites = strAbilities;
+        else if (primaryStat == StatType.INT) abilites = Random.Range(0.0f, 1.0f) > 0.5f ? intDmgAbilities : intSupAbilities;
+        else if (primaryStat == StatType.DEX) abilites = dexAbilities;
+
         UnitAbilityController abilityRoot = hero.GetAbilityController();
         foreach (Ability abilityPrefab in abilites)
         {

@@ -500,7 +500,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.1833333
+  - time: 1.1666666
     functionName: AnimationAttackEndEvent
     data: 
     objectReferenceParameter: {fileID: 0}
