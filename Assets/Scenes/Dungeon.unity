@@ -269,6 +269,8 @@ MonoBehaviour:
   segmentPrefabs:
   - {fileID: 6778248867277719769, guid: daf2f3cf637a408498bfd42183b525eb, type: 3}
   - {fileID: 6778248867277719769, guid: ac8124aab2ef87f4da04fa305047427a, type: 3}
+  - {fileID: 6778248867277719769, guid: 92a62720f49ab524095a31d9f91aa4ce, type: 3}
+  - {fileID: 6778248867277719769, guid: 720a350a3ebfa3c479e172745fb818e1, type: 3}
   interactablePrefabs:
   - {fileID: 3465304786141207813, guid: 82098ba25fbd04741a56673fe8f76e96, type: 3}
   spotlightPrefab: {fileID: 8011247525444017613, guid: 01de3b64c4d9e6b4abf5a185e7b5aa79,
