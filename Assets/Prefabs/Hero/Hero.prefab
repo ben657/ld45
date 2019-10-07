@@ -373,6 +373,8 @@ MonoBehaviour:
   healthBar: {fileID: 4932633333451408953}
   rarity: 0
   cost: 0
+  Chest: {fileID: 4226146110995069088}
+  Hat: {fileID: 4226146110481872035}
 --- !u!65 &1446664063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -604,11 +606,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4226146111826610846}
     m_Modifications:
-    - target: {fileID: 1434688751899117429, guid: bd1b865798ffe01479bb72d572d6fd0a,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthBar
-      objectReference: {fileID: 0}
     - target: {fileID: 7091313442871024794, guid: bd1b865798ffe01479bb72d572d6fd0a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -663,6 +660,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434688751899117429, guid: bd1b865798ffe01479bb72d572d6fd0a,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthBar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd1b865798ffe01479bb72d572d6fd0a, type: 3}
