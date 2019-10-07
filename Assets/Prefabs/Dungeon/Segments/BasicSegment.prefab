@@ -220,7 +220,8 @@ MonoBehaviour:
   maxInteractables: 4
   interactableChance: 0.5
   lightChance: 0.3
-  monsterChance: 0.5
+  minMonsters: 1
+  maxMonsters: 2
 --- !u!1 &1517391900680045859
 GameObject:
   m_ObjectHideFlags: 0

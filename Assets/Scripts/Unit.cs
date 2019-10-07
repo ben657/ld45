@@ -114,6 +114,11 @@ public class Unit : MonoBehaviour
         stats = new UnitStats(str, inte, dex);
     }
 
+    public void SetStats(UnitStats stats)
+    {
+        this.stats = stats;
+    }
+
     protected virtual void Start()
     {
         movementController = GetComponent<UnitMovementController>();

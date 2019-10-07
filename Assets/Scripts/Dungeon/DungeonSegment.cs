@@ -14,7 +14,8 @@ public class DungeonSegment : MonoBehaviour
     public int maxInteractables = 5;
     public float interactableChance = 0.5f;
     public float lightChance = 0.5f;
-    public float monsterChance = 0.5f;
+    public int minMonsters = 1;
+    public int maxMonsters = 10;
 
     public DungeonBuilder builder { get; set; }
 
@@ -25,7 +26,8 @@ public class DungeonSegment : MonoBehaviour
     
     void Awake()
     {
-        boundsCollider = GetComponent<BoxCollider>();    
+        boundsCollider = GetComponent<BoxCollider>();
+        maxMonsters = Mathf.Clamp(maxMonsters, minMonsters, monsterPositions.Length);
     }
 
     // Update is called once per frame
@@ -86,9 +88,14 @@ public class DungeonSegment : MonoBehaviour
         
         if(monsters)
         {
-            foreach (Transform t in monsterPositions)
+            possiblePositions = new List<Transform>(monsterPositions);
+            int monsterCount = Random.Range(minMonsters, maxMonsters + 1);
+            for(int i = 0; i < monsterCount && i < monsterPositions.Length; i++)
             {
-                if (Random.Range(0, 1.0f) > monsterChance) continue;
+                int index = Random.Range(0, possiblePositions.Count);
+                Transform t = possiblePositions[index];
+                possiblePositions.RemoveAt(index);
+
                 MonsterUnit prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
                 MonsterUnit unit = Instantiate(prefab, t.position, t.rotation);
                 unit.transform.parent = t;
