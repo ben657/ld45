@@ -6,10 +6,12 @@ public class UnitAbilityController : MonoBehaviour
 {
     public bool automatic = true;
 
+    Unit unit;
+
     Ability activeAbility = null;
     Ability[] abilities;
 
-    private void Awake()
+    private void Start()
     {
         UpdateAbilityList();
     }
@@ -17,11 +19,17 @@ public class UnitAbilityController : MonoBehaviour
     public void UpdateAbilityList()
     {
         abilities = GetComponentsInChildren<Ability>();
+        foreach (Ability a in abilities) a.SetUnit(this.unit);
     }
 
     public Ability[] GetAbilities()
     {
         return abilities;
+    }
+
+    public void SetUnit(Unit unit)
+    {
+        this.unit = unit;
     }
 
     public void PassthroughMessage(string name)

@@ -34,7 +34,12 @@ public class Ability : MonoBehaviour
 
     protected virtual void Start()
     {
-        unit = GetComponentInParent<Unit>();
+        
+    }
+
+    public void SetUnit(Unit unit)
+    {
+        this.unit = unit;
     }
 
     public virtual void Activate()

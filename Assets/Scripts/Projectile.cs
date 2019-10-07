@@ -16,7 +16,11 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!target) Destroy(gameObject);
+        if (!target)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Vector3 direction = target.transform.position - transform.position;
         direction.y = 0.0f;
         direction.Normalize();

@@ -88,7 +88,7 @@ public class InnManager : MonoBehaviour
             movementController = hero.gameObject.AddComponent<MeleeUnitMovementController>();
         else
             movementController = hero.gameObject.AddComponent<RangedUnitMovementController>();
-        movementController.enabled = false;
+        movementController.Disable();
 
         int seatIndex = Random.Range(0, seats.Count);
         Transform seat = seats[seatIndex];

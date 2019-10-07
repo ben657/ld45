@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonSegment : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class DungeonSegment : MonoBehaviour
 
     BoxCollider boundsCollider;
     bool triggered = false;
+
+    List<MonsterUnit> spawnedMonsters = new List<MonsterUnit>();
     
     void Awake()
     {
@@ -44,7 +47,7 @@ public class DungeonSegment : MonoBehaviour
         interactable.position = t.position;
     }
 
-    public void Generate()
+    public void StartGenerate(bool monsters = true)
     {
         int interactablesSpawned = 0;
         List<Transform> possiblePositions = new List<Transform>(interactablePositions);
@@ -62,7 +65,7 @@ public class DungeonSegment : MonoBehaviour
         foreach(Transform t in interactablePositions)
         {
             if (interactablesSpawned == maxInteractables) break;
-            if (Random.Range(0.0f, 1.0f) > interactableChance) return;
+            if (Random.Range(0.0f, 1.0f) > interactableChance) continue;
             SpawnInteractable(t);
 
             interactablesSpawned += 1;   
@@ -72,14 +75,22 @@ public class DungeonSegment : MonoBehaviour
         {
             t.gameObject.SetActive(Random.Range(0.0f, 1.0f) < lightChance);
         }
-
-        foreach(Transform t in monsterPositions)
+        
+        if(monsters)
         {
-            if (Random.Range(0, 1.0f) > monsterChance) return;
-            MonsterUnit prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
-            MonsterUnit unit = Instantiate(prefab);
-            unit.transform.position = t.position;
+            foreach (Transform t in monsterPositions)
+            {
+                if (Random.Range(0, 1.0f) > monsterChance) continue;
+                MonsterUnit prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
+                MonsterUnit unit = Instantiate(prefab, t.position, t.rotation);
+                spawnedMonsters.Add(unit);
+            }
         }
+    }
+
+    public void CompleteGenerate()
+    {
+        spawnedMonsters.ForEach(m => m.GetMovementController().GetAgent().enabled = true);
     }
 
     public Vector3 GetExitPosition()
@@ -93,7 +104,7 @@ public class DungeonSegment : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (triggered) return;
+        if (triggered || other.isTrigger || !other.GetComponent<HeroUnit>()) return;
         builder.Generate();
         triggered = true;
     }

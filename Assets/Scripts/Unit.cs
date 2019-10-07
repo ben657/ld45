@@ -106,6 +106,7 @@ public class Unit : MonoBehaviour
     void Awake()
     {
         abilityController = GetComponentInChildren<UnitAbilityController>();
+        abilityController.SetUnit(this);
     }
 
     public void SetStats(int str, int inte, int dex)
@@ -280,7 +281,6 @@ public class Unit : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Unit unit = other.GetComponent<Unit>();
-        Debug.Log(other.name);
         if(unit && unit != this)
         {
             unitsInRange.Add(unit);
