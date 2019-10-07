@@ -174,7 +174,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 319799928075918257}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.75
   m_Speed: 3.5
@@ -414,11 +414,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 319799929116431876}
     m_Modifications:
-    - target: {fileID: 1434688751899117429, guid: bd1b865798ffe01479bb72d572d6fd0a,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthBar
-      objectReference: {fileID: 0}
     - target: {fileID: 7091313442871024794, guid: bd1b865798ffe01479bb72d572d6fd0a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -483,6 +478,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.8132715
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434688751899117429, guid: bd1b865798ffe01479bb72d572d6fd0a,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthBar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd1b865798ffe01479bb72d572d6fd0a, type: 3}

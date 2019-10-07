@@ -5,36 +5,24 @@ using UnityEngine.AI;
 
 public class DungeonBuilder : MonoBehaviour
 {
+    public HeroUnit playerHeroPrefab;
     public DungeonSegment[] segmentPrefabs;
     public Transform[] interactablePrefabs;
     public Light spotlightPrefab;
     public LayerMask navigatableLayers;
 
+    HeroUnit playerHero;
     List<DungeonSegment> segments = new List<DungeonSegment>();
     NavMeshSurface navSurface;
 
     // Start is called before the first frame update
     void Start()
     {
-        PlayerHeroController playerController = FindObjectOfType<PlayerHeroController>();
-        Unit playerHero = playerController.unit;
-
         navSurface = gameObject.AddComponent<NavMeshSurface>();
         navSurface.layerMask = navigatableLayers;
         navSurface.collectObjects = CollectObjects.Children;
 
-        Generate();
-
-        Vector3 spawnDir = -Vector3.right;
-        foreach(HeroUnit hero in PartyManager.it.party)
-        {
-            hero.transform.position = spawnDir * 2.0f;
-            hero.GetMovementController().SetLeader(playerHero);
-            hero.ClearUnitsInRange();
-            hero.GetMovementController().enabled = true;
-            hero.GetAbilityController().enabled = true;
-            spawnDir = Quaternion.AngleAxis(90, Vector3.up) * spawnDir;
-        }
+        Generate(true);
     }
 
     // Update is called once per frame
@@ -43,12 +31,39 @@ public class DungeonBuilder : MonoBehaviour
         
     }
 
-    public void GenerateNavmesh()
+    void SpawnHeroes()
     {
-        navSurface.BuildNavMesh();
+        playerHero = Instantiate(playerHeroPrefab);
+        playerHero.GetComponent<UnitMovementController>().Disable();
+        playerHero.transform.position = transform.position;
+        Vector3 spawnDir = -Vector3.right;
+        foreach (HeroUnit hero in PartyManager.it.party)
+        {
+            hero.transform.position = playerHero.transform.position + spawnDir * 2.0f;
+            hero.GetMovementController().SetLeader(playerHero);
+            hero.ClearUnitsInRange();
+            hero.GetMovementController().enabled = true;
+            hero.GetAbilityController().enabled = true;
+            spawnDir = Quaternion.AngleAxis(-90, Vector3.up) * spawnDir;
+        }
     }
 
-    public void Generate()
+    public IEnumerator GenerateNavmeshAndComplete(DungeonSegment segment, bool first = false)
+    {
+        navSurface.BuildNavMesh();
+        yield return new WaitForSeconds(1.0f);
+        segment.CompleteGenerate();
+        if (first)
+        {
+            playerHero.GetMovementController().Enable();
+            foreach (HeroUnit hero in PartyManager.it.party)
+            {
+                hero.GetMovementController().Enable();
+            }
+        }
+    }
+
+    public void Generate(bool first = false)
     {
         DungeonSegment prefab = segmentPrefabs[Random.Range(0, segmentPrefabs.Length)];
         DungeonSegment segment = Instantiate(prefab);
@@ -61,10 +76,11 @@ public class DungeonBuilder : MonoBehaviour
         }
         segment.transform.parent = transform;
         segment.transform.position = position;
-
-        segment.Generate();
-
         segments.Add(segment);
-        GenerateNavmesh();
+
+        if (first) SpawnHeroes();
+
+        segment.StartGenerate(segments.Count > 1);
+        StartCoroutine(GenerateNavmeshAndComplete(segment, first));
     }
 }

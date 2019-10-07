@@ -15,6 +15,18 @@ public class UnitMovementController : MonoBehaviour
 
     bool lastMoving = false;
 
+    public void Enable()
+    {
+        enabled = true;
+        agent.enabled = true;
+    }
+
+    public void Disable()
+    {
+        enabled = false;
+        agent.enabled = false;
+    }
+
     protected virtual void Awake()
     {
         unit = GetComponent<Unit>();
