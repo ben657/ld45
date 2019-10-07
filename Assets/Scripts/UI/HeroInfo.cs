@@ -68,6 +68,7 @@ public class HeroInfo : MonoBehaviour
         {
             PartyManager.it.AddMember(hero);
             GetComponentInParent<InnUIManager>().partyList.AddHero(hero);
+            hero.GetAnimator().SetTrigger("Attack2");
         }
         GetComponentInParent<HeroList>().RemoveHero(hero);
     }

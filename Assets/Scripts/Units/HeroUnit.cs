@@ -17,18 +17,24 @@ public class HeroUnit : Unit
         switch(GetStats().GetPrimaryStat())
         {
             case StatType.STR:
-                Chest.material.SetColor("_BaseColor", Color.red);
-                Hat.material.SetColor("_BaseColor", Color.red);
+                SetColor(Color.red);
                 break;
-            case StatType.INT:         
-                Chest.material.SetColor("_BaseColor", Color.blue);
-                Hat.material.SetColor("_BaseColor", Color.blue);
+            case StatType.INT:
+                if (targettingAlignment == TargettingAlignment.Friendly)
+                    SetColor(Color.cyan);
+                else
+                    SetColor(Color.blue);
                 break;
             case StatType.DEX:
-                Chest.material.SetColor("_BaseColor", Color.green);
-                Hat.material.SetColor("_BaseColor", Color.green);
+                SetColor(Color.green);
                 break;
         }
+    }
+
+    public void SetColor(Color color)
+    {
+        Chest.material.SetColor("_BaseColor", color);
+        Hat.material.SetColor("_BaseColor", color);
     }
 
     protected override bool ShouldTarget(Unit unit)
