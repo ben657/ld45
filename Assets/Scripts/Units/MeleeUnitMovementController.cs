@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeleeUnitMovementController : UnitMovementController
 {
-    public float targetDistance = 0.5f;
+    public float targetDistance = 1.0f;
     public float stopOffset = 0.2f;
 
     float stopDist2 = 0.0f;

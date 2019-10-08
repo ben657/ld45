@@ -41,7 +41,8 @@ public class PartyManager : MonoBehaviour
     {
         if (party.Contains(hero))
             party.Remove(hero);
-        SceneManager.MoveGameObjectToScene(hero.gameObject, SceneManager.GetActiveScene());
+        if(hero.gameObject.scene != SceneManager.GetActiveScene())
+            SceneManager.MoveGameObjectToScene(hero.gameObject, SceneManager.GetActiveScene());
     }
 
     public void AddGold(int amount)

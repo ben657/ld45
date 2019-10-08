@@ -30,11 +30,6 @@ public class PlayerHeroController : MonoBehaviour
                 unit.GetComponent<UnitMovementController>().Move(hit.point);
             }
         }
-
-        if(!unit)
-        {
-            PartyManager.it.LoadInn();
-        }
     
         if(interacting)
         {
@@ -43,9 +38,15 @@ public class PlayerHeroController : MonoBehaviour
         }
         else
         {
+            List<Interactable> toRemove = new List<Interactable>();
+            foreach (Interactable interactable in interactables)
+                if (!interactable) toRemove.Add(interactable);
+            toRemove.ForEach(i => interactables.Remove(i));
+
             foreach (Interactable interactable in interactables)
             {
-                if ((interactable.transform.position - transform.position).sqrMagnitude <= interactDist * interactDist)
+                float dist = (interactable.transform.position - transform.position).sqrMagnitude;
+                if (dist <= interactDist * interactDist)
                 {
                     Debug.Log("Interacting");
                     interacting = interactable;

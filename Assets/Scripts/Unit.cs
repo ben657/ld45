@@ -70,7 +70,6 @@ public struct UnitStats
             return StatType.INT;
         else
             return StatType.DEX;
-
     }
 
     public void SetStat(StatType statType, int stat)
@@ -111,6 +110,8 @@ public class Unit : MonoBehaviour
     Collider boundsCollider;
     [SerializeField]
     Transform model;
+    [SerializeField]
+    AudioSource hitSfx;
 
     Unit target;
     HashSet<Unit> unitsInRange = new HashSet<Unit>();
@@ -189,10 +190,11 @@ public class Unit : MonoBehaviour
     public void Damage(float amount, Vector3 knockback)
     {
         stats.health -= amount;
+        if (stats.health < 0.0f) stats.health = 0.0f;
         healthBar.SetPercentage(stats.GetHealthPercentage());
         if(knockback.sqrMagnitude > 0.0f)
             movementController.GetAgent().velocity += knockback;
-
+        hitSfx.Play();
         if (stats.health <= 0.0f)
         {
             dying = true;

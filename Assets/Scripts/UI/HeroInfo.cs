@@ -78,6 +78,7 @@ public class HeroInfo : MonoBehaviour
         else
         {
             PartyManager.it.AddMember(hero);
+            PartyManager.it.TakeGold(hero.cost);
             GetComponentInParent<InnUIManager>().partyList.AddHero(hero);
             hero.GetAnimator().SetTrigger("Attack2");
         }

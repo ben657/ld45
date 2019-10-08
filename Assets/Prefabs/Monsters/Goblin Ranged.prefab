@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 319799928075918258}
   - component: {fileID: 319799928075918255}
   - component: {fileID: 1261919383}
+  - component: {fileID: -8634066178380027026}
   m_Layer: 0
   m_Name: Goblin Ranged
   m_TagString: Untagged
@@ -140,6 +141,7 @@ MonoBehaviour:
     dexterity: 0
   healthBar: {fileID: 9119364469962218349}
   model: {fileID: 319799929116431876}
+  hitSfx: {fileID: -8634066178380027026}
   coinPrefab: {fileID: 4573178592168475016, guid: f2bd44133de8fba48bfe107e9a9ac9b3,
     type: 3}
   primaryStat: 2
@@ -225,6 +227,102 @@ MonoBehaviour:
   stopOffset: 0.2
   minDistance: 5
   maxDistance: 20
+--- !u!82 &-8634066178380027026
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319799928075918257}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 221c760c69a4bb646b0e4c9c184001d8, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.4
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &319799929116431877
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +416,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3427987604168109683}
+  - {fileID: 843217465124951568}
   m_Father: {fileID: 319799928075918253}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -342,6 +440,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2455906009397334679}
     m_Modifications:
+    - target: {fileID: 7705591048582594468, guid: 6ecb02e95b0966e428da6ff9c5e9d149,
+        type: 3}
+      propertyPath: damageMultiplier
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2603394226583271429, guid: 6ecb02e95b0966e428da6ff9c5e9d149,
         type: 3}
       propertyPath: m_Name
@@ -402,14 +505,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7705591048582594468, guid: 6ecb02e95b0966e428da6ff9c5e9d149,
-        type: 3}
-      propertyPath: damageMultiplier
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ecb02e95b0966e428da6ff9c5e9d149, type: 3}
---- !u!4 &3427987604168109683 stripped
+--- !u!4 &843217465124951568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2603394226583271428, guid: 6ecb02e95b0966e428da6ff9c5e9d149,
     type: 3}

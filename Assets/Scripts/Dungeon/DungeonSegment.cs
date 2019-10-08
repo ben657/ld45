@@ -54,6 +54,7 @@ public class DungeonSegment : MonoBehaviour
         NavMeshSurface navSurface = gameObject.AddComponent<NavMeshSurface>();
         navSurface.layerMask = builder.navigatableLayers;
         navSurface.collectObjects = CollectObjects.Children;
+        navSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
         navSurface.BuildNavMesh();
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HeroUnit : Unit
 {
@@ -48,7 +49,7 @@ public class HeroUnit : Unit
 
     public override IEnumerator Kill()
     {
-        yield return new WaitUntil(() => GetMovementController().GetLeader().IsDead());
+        PartyManager.it.RemoveMember(this);
         yield return base.Kill();
     }
 }

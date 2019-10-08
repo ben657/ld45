@@ -20,7 +20,7 @@ public class DungeonBuilder : MonoBehaviour
     List<DungeonSegment> segments = new List<DungeonSegment>();
 
     // Start is called before the first frame update
-    void Start()
+    public void Build()
     {
         Generate(true);
     }
@@ -28,7 +28,10 @@ public class DungeonBuilder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(playerHero.IsDead())
+        {
+            PartyManager.it.LoadInn();
+        }
     }
 
     void SpawnHeroes(DungeonSegment segment)

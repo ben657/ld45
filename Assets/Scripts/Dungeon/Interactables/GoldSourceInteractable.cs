@@ -18,12 +18,13 @@ public class GoldSourceInteractable : Interactable
     protected override IEnumerator Activate()
     {
         PartyManager.it.AddGold(value);
-        for(int i = 0; i < value; i++)
+        int coins = Mathf.Min(value, 10);
+        for(int i = 0; i < coins; i++)
         {
             Instantiate(coinPrefab, transform.position, transform.rotation);
             yield return new WaitForSeconds(0.2f);
         }
 
-        base.Activate();
+        yield return base.Activate();
     }
 }

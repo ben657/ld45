@@ -46,7 +46,7 @@ public class InnManager : MonoBehaviour
     
     public HeroUnit GenerateHero()
     {
-        StatType primaryStat = (StatType)Random.Range(0, 4);
+        StatType primaryStat = (StatType)Random.Range(0, 3);
         int rarity = Random.Range(1, rarities + 1);
         return GenerateHero(rarity, primaryStat);
     }
@@ -62,7 +62,7 @@ public class InnManager : MonoBehaviour
     public HeroUnit GenerateHero(UnitStats stats, int rarity, StatType primaryStat, int cost)
     {
         HeroUnit hero = Instantiate(heroPrefab);
-        hero.name = "Some random name";
+        hero.name = StatHelper.MakeName();
         hero.rarity = rarity;
         hero.SetStats(stats);
         hero.cost = cost;
@@ -70,7 +70,6 @@ public class InnManager : MonoBehaviour
         if (primaryStat == StatType.STR) abilites = strAbilities;
         else if (primaryStat == StatType.INT) abilites = Random.Range(0.0f, 1.0f) > 0.5f ? intDmgAbilities : intSupAbilities;
         else if (primaryStat == StatType.DEX) abilites = dexAbilities;
-
         UnitAbilityController abilityRoot = hero.GetAbilityController();
         foreach (Ability abilityPrefab in abilites)
         {

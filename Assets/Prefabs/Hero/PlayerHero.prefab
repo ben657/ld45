@@ -30,7 +30,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 768
   color: {r: 1, g: 0.9090755, b: 0, a: 1}
-  interactDist: 0
+  interactDist: 2
 --- !u!1001 &9009895933515519810
 PrefabInstance:
   m_ObjectHideFlags: 0
