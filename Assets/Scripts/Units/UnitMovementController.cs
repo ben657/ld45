@@ -50,12 +50,15 @@ public class UnitMovementController : MonoBehaviour
 
     public virtual void Move(Vector3 target)
     {
-        agent.SetDestination(target);
+        if (GetComponent<PlayerHeroController>()) Debug.Log(agent.isOnNavMesh);
+        if(agent && agent.isOnNavMesh)
+            agent.SetDestination(target);
     }
 
     public virtual void StopMoving()
     {
-        agent.SetDestination(transform.position);
+        if(agent && agent.isOnNavMesh)
+            agent.SetDestination(transform.position);
     }
 
     public bool IsMoving()

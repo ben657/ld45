@@ -114,7 +114,7 @@ public class Unit : MonoBehaviour
     AudioSource hitSfx;
 
     Unit target;
-    HashSet<Unit> unitsInRange = new HashSet<Unit>();
+    List<Unit> unitsInRange = new List<Unit>();
     protected bool dying = false;
     
     void Awake()

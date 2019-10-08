@@ -7,7 +7,7 @@ public class PartyManager : MonoBehaviour
 {
     public static PartyManager it;
 
-    public HashSet<HeroUnit> party = new HashSet<HeroUnit>();
+    public List<HeroUnit> party = new List<HeroUnit>();
 
     int gold = 0;
 

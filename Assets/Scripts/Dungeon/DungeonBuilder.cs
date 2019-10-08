@@ -28,7 +28,7 @@ public class DungeonBuilder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerHero.IsDead())
+        if(playerHero && playerHero.IsDead())
         {
             PartyManager.it.LoadInn();
         }
@@ -48,7 +48,7 @@ public class DungeonBuilder : MonoBehaviour
             hero.transform.parent = segment.transform;
             hero.GetMovementController().SetLeader(playerHero);
             hero.ClearUnitsInRange();
-            hero.GetMovementController().enabled = true;
+            hero.GetMovementController().Enable();
             hero.GetAbilityController().enabled = true;
             spawnDir = Quaternion.AngleAxis(-90, Vector3.up) * spawnDir;
         }
@@ -67,14 +67,14 @@ public class DungeonBuilder : MonoBehaviour
             segment.transform.position = pos;
             s += Time.fixedDeltaTime / segmentFallTime;
         }
-
-        segment.CompleteGenerate();
+        if (first) SpawnHeroes(segment);
+        segment.CompleteGenerate(!first);
         if (first)
         {
-            playerHero.GetMovementController().Enable();
+            playerHero.GetComponent<UnitMovementController>().Enable();
             foreach (HeroUnit hero in PartyManager.it.party)
             {
-                hero.GetMovementController().Enable();
+                hero.GetComponent<UnitMovementController>().Enable();
             }
         }
     }
@@ -94,9 +94,7 @@ public class DungeonBuilder : MonoBehaviour
         segment.transform.position = position + Vector3.up * segmentFallHeight;
         segments.Add(segment);
 
-        if (first) SpawnHeroes(segment);
-
-        segment.StartGenerate(segments.Count > 1);
+        segment.StartGenerate();
         StartCoroutine(GenerateNavmeshAndComplete(segment, first));
     }
 }

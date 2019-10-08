@@ -58,7 +58,7 @@ public class DungeonSegment : MonoBehaviour
         navSurface.BuildNavMesh();
     }
 
-    public void StartGenerate(bool monsters = true)
+    public void StartGenerate()
     {
         int interactablesSpawned = 0;
         List<Transform> possiblePositions = new List<Transform>(interactablePositions);
@@ -86,12 +86,15 @@ public class DungeonSegment : MonoBehaviour
         {
             t.gameObject.SetActive(Random.Range(0.0f, 1.0f) < lightChance);
         }
-        
-        if(monsters)
+    }
+
+    public void CompleteGenerate(bool monsters = true)
+    {
+        if (monsters)
         {
-            possiblePositions = new List<Transform>(monsterPositions);
+            List<Transform> possiblePositions = new List<Transform>(monsterPositions);
             int monsterCount = Random.Range(minMonsters, maxMonsters + 1);
-            for(int i = 0; i < monsterCount && i < monsterPositions.Length; i++)
+            for (int i = 0; i < monsterCount && i < monsterPositions.Length; i++)
             {
                 int index = Random.Range(0, possiblePositions.Count);
                 Transform t = possiblePositions[index];
@@ -99,15 +102,11 @@ public class DungeonSegment : MonoBehaviour
 
                 MonsterUnit prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
                 MonsterUnit unit = Instantiate(prefab, t.position, t.rotation);
+                unit.GetComponent<UnitMovementController>().Enable();
                 unit.transform.parent = t;
                 spawnedMonsters.Add(unit);
             }
         }
-    }
-
-    public void CompleteGenerate()
-    {
-        spawnedMonsters.ForEach(m => m.GetMovementController().GetAgent().enabled = true);
         GetComponentInChildren<NavMeshLink>(true).gameObject.SetActive(true);
     }
 

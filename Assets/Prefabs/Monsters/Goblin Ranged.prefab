@@ -217,7 +217,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 319799928075918257}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea9c08e67f428cf47a4203dffcf341a6, type: 3}
   m_Name: 
@@ -416,7 +416,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 843217465124951568}
+  - {fileID: 843217465124951582}
   m_Father: {fileID: 319799928075918253}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -507,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ecb02e95b0966e428da6ff9c5e9d149, type: 3}
---- !u!4 &843217465124951568 stripped
+--- !u!4 &843217465124951582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2603394226583271428, guid: 6ecb02e95b0966e428da6ff9c5e9d149,
     type: 3}

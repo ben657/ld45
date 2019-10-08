@@ -9,7 +9,7 @@ public class PlayerHeroController : MonoBehaviour
     public Color color = Color.black;
     public float interactDist = 0.0f;
 
-    HashSet<Interactable> interactables = new HashSet<Interactable>();
+    List<Interactable> interactables = new List<Interactable>();
     Interactable interacting;
 
     // Start is called before the first frame update
@@ -23,10 +23,12 @@ public class PlayerHeroController : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
+            Debug.Log("Click");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, interactableLayers))
             {
+                Debug.Log("Move");
                 unit.GetComponent<UnitMovementController>().Move(hit.point);
             }
         }
